@@ -1,20 +1,12 @@
+import os
+
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
 
-def prepare_data():
-    url = "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
-    df = pd.read_csv(url, sep=";")
-
-    y = df["quality"]
-    x = df.copy()
-    x.pop("quality")
-
-    x_train, x_test, y_train, y_test = train_test_split(
-        x,
-        y,
-        test_size=0.25,
-        random_state=123456,
-    )
+def prepare_data(data_folder):
+    x_train = pd.read_csv(os.path.join(data_folder, "x_train.csv"), index_col=0)
+    x_test = pd.read_csv(os.path.join(data_folder, "x_test.csv"), index_col=0)
+    y_train = pd.read_csv(os.path.join(data_folder, "y_train.csv"))["quality"]
+    y_test = pd.read_csv(os.path.join(data_folder, "y_test.csv"))["quality"]
 
     return x_train, x_test, y_train, y_test

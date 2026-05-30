@@ -1,0 +1,30 @@
+from homework.src._internals.calculate_metrics import calculate_metrics
+from homework.src._internals.parse_argument import parse_argument
+from homework.src._internals.prepare_data import prepare_data
+from homework.src._internals.print_metrics import print_metrics
+from homework.src._internals.save_model_if_better import save_model_if_better
+from homework.src._internals.select_model import select_model
+
+DATA_FOLDER = "data/winequality-red/"
+
+
+def main():
+    args = parse_argument()
+    model = select_model(args)
+
+    x_train, x_test, y_train, y_test = prepare_data(DATA_FOLDER)
+
+    # Fit the model
+    model.fit(x_train, y_train)
+
+    mse, mae, r2 = calculate_metrics(x_train, y_train, model)
+    print_metrics("Training metrics", mse, mae, r2)
+
+    mse, mae, r2 = calculate_metrics(x_train, y_train, model)
+    print_metrics("Testing metrics", mse, mae, r2)
+
+    save_model_if_better(model, x_test, y_test)
+
+
+if __name__ == "__main__":
+    main()
